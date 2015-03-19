@@ -16,8 +16,8 @@ angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory'])
                 StatusBar.styleDefault();
             }
 
-            DSCacheFactory("leagueDataCache", {storageMode: "localStorage", maxAge: 5000, deleteOnExpire: "aggressive"});
-            DSCacheFactory("leaguesCache", {storageMode: "localStorage", maxAge: 10000, deleteOnExpire: "aggressive"});
+            DSCacheFactory("leagueDataCache", {storageMode: "localStorage", maxAge: 60000, deleteOnExpire: "aggressive"});
+            DSCacheFactory("leaguesCache", {storageMode: "localStorage", maxAge: 60000, deleteOnExpire: "aggressive"});
             DSCacheFactory("myTeamsCache", {storageMode: "localStorage"});
             DSCacheFactory("staticCache", {storageMode: "localStorage"});
         });
@@ -43,6 +43,7 @@ angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory'])
             url: "/myteams",
             views: {
                 "tab-myteams": {
+                    controller: 'MyTeamsCtrl as vm',
                     templateUrl: "app/home/myteams.html"
                 }
             }

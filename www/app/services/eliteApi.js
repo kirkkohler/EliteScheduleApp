@@ -1,4 +1,4 @@
-(function () {
+(function() {
     'use strict';
 
     angular.module('eliteApp').factory('eliteApi', ['$http', '$q', '$ionicLoading', 'DSCacheFactory', eliteApi]);
@@ -13,10 +13,10 @@
         self.leagueDataCache = DSCacheFactory.get("leagueDataCache");
 
         self.leaguesCache.setOptions({
-            onExpire: function (key, value) {
-                getLeagues().then(function () {
+            onExpire: function(key, value) {
+                getLeagues().then(function() {
                     console.log('Leagues Cache was automatically refreshed');
-                }, function () {
+                }, function() {
                     console.log('Error getting data. Putting expired items back in the cache', new Date());
                     self.leaguesCache.put(key, value);
                 });
@@ -24,10 +24,10 @@
         });
 
         self.leagueDataCache.setOptions({
-            onExpire: function (key, value) {
-                getLeagueData().then(function () {
+            onExpire: function(key, value) {
+                getLeagueData().then(function() {
                     console.log('League Data Cache was automatically refreshed');
-                }, function () {
+                }, function() {
                     console.log('Error getting data. Putting expired items back in the cache', new Date());
                     self.leagueDataCache.put(key, value);
                 });
@@ -63,13 +63,13 @@
                 });
 
                 $http.get('http://elite-schedule.net/api/leaguedata')
-                    .success(function (data) {
+                    .success(function(data) {
                         console.log('Received leagueData via HTTP');
                         self.leaguesCache.put(cacheKey, data);
                         deferred.resolve(data);
                         $ionicLoading.hide();
                     })
-                    .error(function () {
+                    .error(function() {
                         console.log('Error while making HTTP call.');
                         deferred.reject();
                         $ionicLoading.hide();
@@ -84,10 +84,18 @@
          });
          };*/
 
-        function getLeagueData() {
+        function getLeagueData(forceRefresh) {
+            if (typeof forceRefresh === 'undefined') {
+                forceRefresh = false;
+            }
+
             var deferred = $q.defer(),
                 cacheKey = "leagueData-" + getLeagueId(),
-                leagueData = self.leagueDataCache.get(cacheKey);
+                leagueData = null;
+
+            if (!forceRefresh) {
+                leagueData = self.leagueDataCache.get(cacheKey)
+            };
 
             console.log('getLeagueData: currentLeagueId', getLeagueId());
 
@@ -99,12 +107,12 @@
                     template: 'Loading...'
                 });
                 $http.get('http://elite-schedule.net/api/leaguedata/' + getLeagueId())
-                    .success(function (data, status) {
+                    .success(function(data, status) {
                         console.log('Received schedule data via HTTP.', data, status);
                         self.leagueDataCache.put(cacheKey, data);
                         deferred.resolve(data);
                         $ionicLoading.hide();
-                    }).error(function () {
+                    }).error(function() {
                         console.log('Error while making HTTP call.');
                         deferred.reject();
                         $ionicLoading.hide();

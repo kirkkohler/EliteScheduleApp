@@ -1,9 +1,9 @@
 (function() {
     'use strict';
 
-    angular.module('eliteApp').controller('TeamDetailCtrl', ['$stateParams', '$ionicPopup', 'eliteApi', TeamDetailCtrl]);
+    angular.module('eliteApp').controller('TeamDetailCtrl', ['$stateParams', '$ionicPopup', 'eliteApi', 'myTeamsService', TeamDetailCtrl]);
 
-    function TeamDetailCtrl($stateParams, $ionicPopup, eliteApi) {
+    function TeamDetailCtrl($stateParams, $ionicPopup, eliteApi, myTeamsService) {
         var vm = this;
         console.log('$stateParams', $stateParams);
 
@@ -47,7 +47,7 @@
                 })
                 .value();
 
-            vm.following = false;
+            vm.following = myTeamsService.isFollowingTeam(vm.teamId);
 
             vm.toggleFollow = function() {
                 /*vm.following = !vm.following;*/
@@ -58,11 +58,13 @@
                     });
                     confirmPopup.then(function(res) {
                         if (res) {
-                            vm.following = !vm.following;
+                            myTeamsService.unfollowTeam(vm.teamId);
+                            vm.following = myTeamsService.isFollowingTeam(vm.teamId);
                         }
                     });
                 } else {
-                    vm.following = !vm.following;
+                    myTeamsService.followTeam(team);
+                    vm.following = myTeamsService.isFollowingTeam(vm.teamId);
                 }
             };
         })

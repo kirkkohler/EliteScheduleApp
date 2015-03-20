@@ -123,6 +123,7 @@ angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory', 'uiGmapgoogl
             url: "/rules",
             views: {
                 "mainContent": {
+                    controller: "RulesCtrl as vm",
                     templateUrl: "app/rules/rules.html"
                 }
             }

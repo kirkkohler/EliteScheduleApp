@@ -1,4 +1,9 @@
 /* Empty. Add your own CSS if you like */
+.allow-bullets ul{
+	list-style-type: disc;
+	padding-left: 20px;
+}
+
 map{
 	display: block;
 	width: 100%;

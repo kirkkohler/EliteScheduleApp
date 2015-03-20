@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory', 'google-maps'])
+angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory', 'uiGmapgoogle-maps'])
     .run(function($ionicPlatform, DSCacheFactory) {
         $ionicPlatform.ready(function() {
             // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard for form inputs)
@@ -16,10 +16,22 @@ angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory', 'google-maps
                 StatusBar.styleDefault();
             }
 
-            DSCacheFactory("leagueDataCache", {storageMode: "localStorage", maxAge: 60000, deleteOnExpire: "aggressive"});
-            DSCacheFactory("leaguesCache", {storageMode: "localStorage", maxAge: 60000, deleteOnExpire: "aggressive"});
-            DSCacheFactory("myTeamsCache", {storageMode: "localStorage"});
-            DSCacheFactory("staticCache", {storageMode: "localStorage"});
+            DSCacheFactory("leagueDataCache", {
+                storageMode: "localStorage",
+                maxAge: 60000,
+                deleteOnExpire: "aggressive"
+            });
+            DSCacheFactory("leaguesCache", {
+                storageMode: "localStorage",
+                maxAge: 60000,
+                deleteOnExpire: "aggressive"
+            });
+            DSCacheFactory("myTeamsCache", {
+                storageMode: "localStorage"
+            });
+            DSCacheFactory("staticCache", {
+                storageMode: "localStorage"
+            });
         });
     })
 
@@ -93,7 +105,17 @@ angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory', 'google-maps
             url: "/locations",
             views: {
                 "mainContent": {
+                    controller: "LocationsCtrl as vm",
                     templateUrl: "app/locations/locations.html"
+                }
+            }
+        })
+        .state('app.location-map', {
+            url: "/location-map/:id",
+            views: {
+                "mainContent": {
+                    
+                    templateUrl: "app/locations/location-map.html"
                 }
             }
         })
@@ -106,5 +128,5 @@ angular.module('eliteApp', ['ionic', 'angular-data.DSCacheFactory', 'google-maps
             }
         });
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/app/teams');
+    $urlRouterProvider.otherwise('/app/locations');
 });
